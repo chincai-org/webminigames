@@ -1,0 +1,12 @@
+---
+import Layout from "../layouts/Base.astro";
+
+import { getSession } from "../sessions";
+const session = getSession(Astro.cookies);
+const username = session.get("username");
+---
+
+<Layout>
+	<h1>Welcome {username}</h1>
+</Layout>
+

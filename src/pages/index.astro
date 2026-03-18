@@ -1,0 +1,39 @@
+---
+import Layout from "../layouts/Base.astro";
+// import { saveUser } from "../db";
+import { getSession } from "../sessions";
+
+let errorMessage = "";
+
+if (Astro.request.method === "POST") {
+	const formData = await Astro.request.formData();
+	const username = formData.get("username").toString();
+
+	if (!username || username.length < 3) {
+		errorMessage = "Username must be at least 3 characters.";
+	} else if (username.length > 15) {
+		errorMessage = "Username must be at most 15 characters.";
+	} else if (typeof username !== "string") {
+		errorMessage = "Username is not a string.";
+	} else {
+		try {
+			// await saveUser(username);
+			const session = getSession(Astro.cookies);
+			session.set("username", username);
+			return Astro.redirect("/games");
+		} catch {
+			errorMessage = "Failed to save user. Please try again.";
+		}
+	}
+}
+---
+
+<Layout>
+  <h1>Welcome to web minigames</h1>
+  {errorMessage && <p style="color: red">{errorMessage}</p>}
+  <form method="POST">
+    <label>Key in your username:</label>
+    <input type="text" name="username" placeholder="your username here" />
+    <button type="submit">Submit</button>
+  </form>
+</Layout>
