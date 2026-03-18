@@ -1,5 +1,7 @@
 # webminigames
 
+A place to have people to play skill-based games
+
 To install dependencies:
 
 ```bash
